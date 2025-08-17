@@ -83,8 +83,10 @@ if user_question:
 
     model = "claude-3-5-sonnet"  # or your approved model
     prompt = f"Answer this question using the dataset: {user_question} <context>{df_string}</context>"
-    row = session.select(
-        call_function("SNOWFLAKE.CORTEX.COMPLETE", lit(model), lit(prompt)).alias("text")
-    ).collect()[0]
+    #row = session.select(
+    #   call_function("SNOWFLAKE.CORTEX.COMPLETE", lit(model), lit(prompt)).alias("text")
+    #).collect()[0]
+    df = session.sql("SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?) AS TEXT").bind([model, prompt])
+    row = df.collect()[0]
     st.write(row["TEXT"])
 
