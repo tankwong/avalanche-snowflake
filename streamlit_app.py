@@ -1,8 +1,12 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+
+## remove these line and replace with snowpark/sql calls
 #from snowflake.snowpark.context import get_active_session
 #from snowflake.cortex import complete
+
+## call cortex via snowpark/sql (no snoflake.cortex import)
 from snowflake.snowpark import Session
 from snowflake.snowpark.functions import col, lit, call_function
 
@@ -11,6 +15,8 @@ st.title("Avalanche Streamlit App")
 
 # Get data from Snowflake
 #session = get_active_session()
+
+## call cortex via snowpark/sql (no snoflake.cortex import) and connect using secrets
 @st.cache_resource
 def get_session():
     return Session.builder.configs(dict(st.secrets["snowflake"])).create()
