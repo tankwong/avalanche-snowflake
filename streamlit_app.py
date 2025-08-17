@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 ## remove these line and replace with snowpark/sql calls
 #from snowflake.snowpark.context import get_active_session
-#from snowflake.cortex import complete
+from snowflake.cortex import complete
 
 ## call cortex via snowpark/sql (no snoflake.cortex import)
 from snowflake.snowpark import Session
