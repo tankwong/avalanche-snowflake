@@ -82,7 +82,7 @@ if user_question:
     #st.write(response)
 
     model = "claude-3-5-sonnet"  # or your approved model
-    prompt = "Summarize recent customer sentiment."
+    prompt = f"Answer this question using the dataset: {user_question} <context>{df_string}</context>"
     row = session.select(
         call_function("SNOWFLAKE.CORTEX.COMPLETE", lit(model), lit(prompt)).alias("text")
     ).collect()[0]
