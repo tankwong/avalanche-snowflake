@@ -86,7 +86,9 @@ if user_question:
     #row = session.select(
     #   call_function("SNOWFLAKE.CORTEX.COMPLETE", lit(model), lit(prompt)).alias("text")
     #).collect()[0]
-    df = session.sql("SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?) AS TEXT").bind([model, prompt])
+    df  = session.create_dataframe([1]).select(
+        call_function("SNOWFLAKE.CORTEX.COMPLETE", lit(model), lit(prompt)).alias("TEXT")
+     )
     row = df.collect()[0]
     st.write(row["TEXT"])
 
