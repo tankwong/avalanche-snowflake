@@ -1,14 +1,24 @@
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
 import pandas as pd
 import matplotlib.pyplot as plt
+#from snowflake.snowpark.context import get_active_session
 #from snowflake.cortex import complete
+from snowflake.snowpark import Session
+from snowflake.snowpark.functions import col, lit, call_function
 
 # Initialize the Streamlit app
 st.title("Avalanche Streamlit App")
 
 # Get data from Snowflake
-session = get_active_session()
+#session = get_active_session()
+@st.cache_resource
+def get_session():
+    return Session.builder.configs(dict(st.secrets["snowflake"])).create()
+
+session = get_session()
+session.use_database(st.secrets["snowflake"]["database"])
+session.use_schema(st.secrets["snowflake"]["schema"])
+
 query = """
 SELECT
     *
