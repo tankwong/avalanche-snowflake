@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 ## remove these line and replace with snowpark/sql calls
 #from snowflake.snowpark.context import get_active_session
-from snowflake.cortex import complete
+#from snowflake.cortex import complete
 
 ## call cortex via snowpark/sql (no snoflake.cortex import)
 from snowflake.snowpark import Session
@@ -78,5 +78,13 @@ user_question = st.text_input("Enter your question here:")
 
 if user_question:
 
-    response = complete(model="claude-3-5-sonnet", prompt=f"Answer this question using the dataset: {user_question} <context>{df_string}</context>", session=session)
-    st.write(response)
+    #response = complete(model="claude-3-5-sonnet", prompt=f"Answer this question using the dataset: {user_question} <context>{df_string}</context>", session=session)
+    #st.write(response)
+
+    model = "claude-3-5-sonnet"  # or your approved model
+    prompt = "Summarize recent customer sentiment."
+    row = session.select(
+        call_function("SNOWFLAKE.CORTEX.COMPLETE", lit(model), lit(prompt)).alias("text")
+    ).collect()[0]
+    st.write(row["TEXT"])
+
